@@ -1,13 +1,19 @@
 import React, { useState } from 'react'
+import { useSignup } from '../hooks/useSignup'
 
 export default function Signup() {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+    const {signup, error, isLoading} = useSignup()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        console.log(email, password)
+        console.log('Signup.tsx',email, password)
+        await signup(email, password)
+
+        setEmail('')
+        setPassword('')
     }
 
     return (
@@ -29,7 +35,8 @@ export default function Signup() {
             autoComplete="current-password"
         />
 
-        <button>Sign up</button>
+        <button disabled={isLoading}>Sign up</button>
+        {error !== 'false' && <div className="error">{error}</div>}
     </form>
     )
 }
