@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Workout from '../models/workout';
+import Workout from '../models/workoutModel';
 import { Request, Response } from 'express';
 // get all workouts
 export const getWorkouts = async (req: Request, res: Response) => {

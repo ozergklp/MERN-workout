@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import WorkoutReducer from './Features/workoutSlice';
+import userReducer from './Features/authSlice'
 
 export const store = configureStore({
     reducer: {
         workouts: WorkoutReducer,
+        user: userReducer
     }
 })
 
