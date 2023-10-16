@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addWorkout } from '../redux/Features/workoutSlice';
+import { RootState } from '../redux/store';
 export default function WorkoutForm ()  {
     const dispatch = useDispatch();
+    const user = useSelector((state: RootState) => state.user.user);
     const [title, setTitle] = useState<string>('')
     const [load, setLoad] = useState<string>('')
     const [reps, setReps] = useState<string>('')
@@ -12,13 +14,19 @@ export default function WorkoutForm ()  {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
+        if (!user) {
+            setError('You must be logged in')
+            return
+        }
+
         const workout = {title, load, reps}
         
         const response = await fetch('http://localhost:4000/api/workouts', {
             method: 'POST',
             body: JSON.stringify(workout),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()

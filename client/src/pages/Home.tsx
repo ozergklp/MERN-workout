@@ -8,9 +8,15 @@ import { RootState } from '../redux/store';
 export default function Home() {
     const dispatch  = useDispatch();
     const workouts = useSelector((state: RootState) => state.workouts.workouts);
+    const user = useSelector((state: RootState) => state.user.user);
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const response = await fetch('http://localhost:4000/api/workouts')
+            console.log(user?.token)
+            const response = await fetch('http://localhost:4000/api/workouts',{
+                headers: {
+                    'Authorization': `Bearer ${user?.token}`
+                }
+            })
             const json = await response.json()
     
             if (response.ok) {
@@ -22,7 +28,7 @@ export default function Home() {
         }
     
         fetchWorkouts()
-    }, [])
+    }, [dispatch, user])
     
     return (
         <main className='mx-10'>

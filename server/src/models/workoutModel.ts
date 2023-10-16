@@ -4,6 +4,7 @@ interface IWorkout extends Document {
     title: string;
     reps: number;
     load: number;
+    user_id: string;
 }
 
 const workoutSchema : Schema = new Schema({
@@ -17,6 +18,10 @@ const workoutSchema : Schema = new Schema({
     },
     load: {
         type: Number,
+        required: true
+    },
+    user_id : {
+        type: String,
         required: true
     }
 }, { timestamps: true })

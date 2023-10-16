@@ -1,7 +1,8 @@
 import React from 'react';
 import { Workout } from '../types/workoutType';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteWorkout } from '../redux/Features/workoutSlice';
+import { RootState } from '../redux/store';
 
 type Props = {
     workout: Workout;
@@ -9,9 +10,17 @@ type Props = {
 
 const WorkoutDetails: React.FC<Props> = ({ workout }) => {
     const dispatch = useDispatch();
-    const handleClick =async () => {
+    const user = useSelector((state: RootState) => state.user.user);
+    const handleClick = async () => {
+        if (!user) {
+            return
+        }
+
         const response = await fetch('http://localhost:4000/api/workouts/' + workout._id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user?.token}`
+            }
         })
         const json = await response.json()
 
